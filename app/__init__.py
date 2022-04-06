@@ -130,35 +130,40 @@ class UserController(Resource):
 class BarangController(Resource):
     def get(self):
         result = db.engine.execute(
-            "select b.username,a.nama from barang a left join user b on a.id_user=b.id")
-        aData = [{"username": row[0], "barang":row[1]} for row in result]
+            "select * from barang")
+        aData = [{"id": row[0], "kode_barang":row[1],
+                  "nama_barang":row[2], "harga":row[3], "stok":row[4]} for row in result]
         data = {
-            "message": "Get all user with barang",
+            "message": "Get all barang",
             "aData": aData
         }
 
         return data, 200, {'ContentType': 'application/json'}
 
     def post(self):
-        iduser = request.json['id_user']
-        nama = request.json['nama_barang']
+        kode_barang = request.json['kode_barang']
+        nama_barang = request.json['nama_barang']
+        harga = request.json['harga']
+        stok = request.json['stok']
 
         try:
             result = db.engine.execute(
-                f"insert into barang (id_user,nama) values ('{iduser}','{nama}')")
+                f"insert into barang (kode_barang,nama_barang,harga,stok) values ('{kode_barang}','{nama_barang}','{harga}','{stok}')")
         except IntegrityError:
             return {"result": False}, 400, {'ContentType': 'application/json'}
 
         return {"result": True}, 201, {'ContentType': 'application/json'}
 
     def put(self):
-        userid = request.json['id']
-        username = request.json['username']
-        password = request.json['password']
+        id_barang = request.json['id']
+        kode_barang = request.json['kode_barang']
+        nama_barang = request.json['nama_barang']
+        harga = request.json['harga']
+        stok = request.json['stok']
 
         try:
             result = db.engine.execute(
-                f"update user set username='{username}', password='{password}' where id={userid}")
+                f"update barang set kode_barang='{kode_barang}', nama_barang='{nama_barang}', harga='{harga}', stok='{stok}' where id={id_barang}")
 
         except IntegrityError:
             return {"result": False}, 400, {'ContentType': 'application/json'}
@@ -166,22 +171,74 @@ class BarangController(Resource):
         return {"result": True}, 200, {'ContentType': 'application/json'}
 
     def delete(self):
-        userid = request.json['id']
+        id_barang = request.json['id']
         try:
             result = db.engine.execute(
-                f"delete from user where id={userid}")
+                f"delete from barang where id={id_barang}")
         except IntegrityError:
             return {"result": False}, 400, {'ContentType': 'application/json'}
 
         return {"result": True}, 200, {'ContentType': 'application/json'}
 
-    def beli_barang(self):
-        return "beli"
+
+class TransaksiController(Resource):
+    def get(self):
+        result = db.engine.execute(
+            "select * from barang")
+        aData = [{"id": row[0], "kode_barang":row[1],
+                  "nama_barang":row[2], "harga":row[3], "stok":row[4]} for row in result]
+        data = {
+            "message": "Get all barang",
+            "aData": aData
+        }
+
+        return data, 200, {'ContentType': 'application/json'}
+
+    def post(self):
+        kode_barang = request.json['kode_barang']
+        nama_barang = request.json['nama_barang']
+        harga = request.json['harga']
+        stok = request.json['stok']
+
+        try:
+            result = db.engine.execute(
+                f"insert into barang (kode_barang,nama_barang,harga,stok) values ('{kode_barang}','{nama_barang}','{harga}','{stok}')")
+        except IntegrityError:
+            return {"result": False}, 400, {'ContentType': 'application/json'}
+
+        return {"result": True}, 201, {'ContentType': 'application/json'}
+
+    def put(self):
+        id_barang = request.json['id']
+        kode_barang = request.json['kode_barang']
+        nama_barang = request.json['nama_barang']
+        harga = request.json['harga']
+        stok = request.json['stok']
+
+        try:
+            result = db.engine.execute(
+                f"update barang set kode_barang='{kode_barang}', nama_barang='{nama_barang}', harga='{harga}', stok='{stok}' where id={id_barang}")
+
+        except IntegrityError:
+            return {"result": False}, 400, {'ContentType': 'application/json'}
+
+        return {"result": True}, 200, {'ContentType': 'application/json'}
+
+    def delete(self):
+        id_barang = request.json['id']
+        try:
+            result = db.engine.execute(
+                f"delete from barang where id={id_barang}")
+        except IntegrityError:
+            return {"result": False}, 400, {'ContentType': 'application/json'}
+
+        return {"result": True}, 200, {'ContentType': 'application/json'}
 
 
 # Route
 api.add_resource(UserController, '/user')
 api.add_resource(BarangController, '/barang')
+api.add_resource(TransaksiController, '/Transaksi')
 
 
 if __name__ == '__main__':
