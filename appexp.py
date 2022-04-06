@@ -16,6 +16,7 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
+    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
@@ -30,19 +31,39 @@ class User(db.Model):
 
 
 class Barang(db.Model):
+    __tablename__ = "Barang"
     id = db.Column(db.Integer, primary_key=True)
-    nama = db.Column(db.String(100), unique=True)
+    kode_barang = db.Column(db.String(100), unique=True)
+    nama_barang = db.Column(db.String(100))
     harga = db.Column(db.String(100))
-    id_user = db.Column(db.Integer)
+    stok = db.Column(db.Integer)
     created_at = db.Column(db.DateTime())
     updated_at = db.Column(db.DateTime())
 
-    def __init__(self, nama, harga, id_user, created_at, updated_at):
-        self.nama = nama
+    def __init__(self, kode_barang, nama_barang, harga, stok, created_at, updated_at):
+        self.kode_barang = kode_barang
+        self.nama_barang = nama_barang
         self.harga = harga
-        self.id_user = id_user
+        self.stok = stok
         self.created_at = created_at
         self.updated_at = updated_at
+
+
+class Transaksi(db.Model):
+    __tablename__ = "Transaksi"
+    id = db.Column(db.Integer, primary_key=True)
+    kode_barang = db.Column(db.String(100))
+    id_user = db.Column(db.String(100))
+    jumlah = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime())
+    updated_at = db.Column(db.DateTime())
+    # kode_barang = db.Column(
+    #     db.String(100), db.ForeignKey('Barang.kode_barang'))
+    # Barang = db.relationship(
+    #     "Barang", backref=backref("Barang", uselist=False))
+    # id_user = db.Column(db.String(100), db.ForeignKey('User.id'))
+    # User = db.relationship(
+    #     "User", backref=backref("User", uselist=False))
 
 # Controller
 
