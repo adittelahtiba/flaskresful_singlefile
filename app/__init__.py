@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 api = Api(app)
@@ -57,13 +58,6 @@ class Transaksi(db.Model):
     jumlah = db.Column(db.Integer)
     created_at = db.Column(db.DateTime())
     updated_at = db.Column(db.DateTime())
-    # kode_barang = db.Column(
-    #     db.String(100), db.ForeignKey('Barang.kode_barang'))
-    # Barang = db.relationship(
-    #     "Barang", backref=backref("Barang", uselist=False))
-    # id_user = db.Column(db.String(100), db.ForeignKey('User.id'))
-    # User = db.relationship(
-    #     "User", backref=backref("User", uselist=False))
 
 # Controller
 
